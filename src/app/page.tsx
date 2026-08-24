@@ -15,6 +15,7 @@ import AssistantChat from "@/components/AssistantChat";
 function Builder() {
   const [step, setStep] = useState(0);
   const [assistantOpen, setAssistantOpen] = useState(false);
+  const [previewExpanded, setPreviewExpanded] = useState(false);
   const { data } = useCv();
 
   return (
@@ -64,6 +65,12 @@ function Builder() {
           </div>
 
           <div className="panel-preview">
+            <div className="preview-panel-header">
+              <span className="preview-panel-label">Live preview</span>
+              <button className="preview-expand-btn" onClick={() => setPreviewExpanded(true)}>
+                ⤢ Expand
+              </button>
+            </div>
             <div id="livePreviewDoc">
               <CvPreviewDoc data={data} />
             </div>
@@ -72,6 +79,17 @@ function Builder() {
             </div>
           </div>
         </div>
+
+        {previewExpanded && (
+          <div className="preview-modal-backdrop" onClick={() => setPreviewExpanded(false)}>
+            <div className="preview-modal" onClick={(e) => e.stopPropagation()}>
+              <button className="preview-modal-close" onClick={() => setPreviewExpanded(false)} aria-label="Collapse preview">
+                ×
+              </button>
+              <CvPreviewDoc data={data} />
+            </div>
+          </div>
+        )}
 
         {assistantOpen && (
           <div className="assistant-popup">
