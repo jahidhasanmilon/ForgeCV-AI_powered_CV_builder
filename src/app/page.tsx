@@ -28,14 +28,6 @@ function Builder() {
             </div>
             <div className="tagline">AI CV builder for going abroad</div>
           </div>
-          <div className="stack-badges">
-            <span className="badge">Next.js</span>
-            <span className="badge">TypeScript</span>
-            <span className="badge">AI LLM</span>
-            <span className="badge">Tool use</span>
-            <span className="badge">RAG</span>
-            <span className="badge">3rd-party API</span>
-          </div>
         </div>
       </header>
 
