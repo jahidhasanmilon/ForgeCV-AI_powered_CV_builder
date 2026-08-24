@@ -77,11 +77,9 @@ export default function PreviewStep({ onBack }: { onBack: () => void }) {
             minHeight: 110,
             padding: "9px 11px",
             border: "1.5px solid var(--border)",
-            borderRadius: 8,
+            borderRadius: 3,
             fontFamily: "Inter, sans-serif",
             fontSize: 13,
-            background: "var(--paper)",
-            color: "var(--ink)",
           }}
         />
         <button className="ai-btn" style={{ marginTop: 10 }} disabled={loading} onClick={checkMatch}>
