@@ -18,77 +18,81 @@ function Builder() {
   const { data } = useCv();
 
   return (
-    <div className="app">
-      <div className="topbar">
-        <div>
-          <div className="brand">
-            ForgeCV<span>.</span>
+    <>
+      <header className="site-header">
+        <div className="topbar">
+          <div>
+            <div className="brand">
+              ForgeCV<span>.</span>
+            </div>
+            <div className="tagline">AI CV builder for going abroad</div>
           </div>
-          <div className="tagline">AI CV builder for going abroad</div>
+          <div className="stack-badges">
+            <span className="badge">Next.js</span>
+            <span className="badge">TypeScript</span>
+            <span className="badge">AI LLM</span>
+            <span className="badge">Tool use</span>
+            <span className="badge">RAG</span>
+            <span className="badge">3rd-party API</span>
+          </div>
         </div>
-        <div className="stack-badges">
-          <span className="badge">Next.js</span>
-          <span className="badge">TypeScript</span>
-          <span className="badge">AI LLM</span>
-          <span className="badge">Tool use</span>
-          <span className="badge">RAG</span>
-          <span className="badge">3rd-party API</span>
+      </header>
+
+      <div className="app">
+        <StepTracker step={step} onSelect={setStep} />
+
+        <div className="spread">
+          <div className="panel-form">
+            {step === 0 && <PersonalStep />}
+            {step === 1 && <EducationStep />}
+            {step === 2 && <ExperienceStep />}
+            {step === 3 && <SkillsStep />}
+            {step === 4 && <PreviewStep onBack={() => setStep(0)} />}
+
+            <div className="nav-buttons">
+              <button className="btn secondary" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+                ← Back
+              </button>
+              <button
+                className="btn"
+                disabled={step === STEPS.length - 1}
+                onClick={() => setStep((s) => s + 1)}
+              >
+                {step === STEPS.length - 2 ? "Preview →" : "Next →"}
+              </button>
+            </div>
+          </div>
+
+          <div className="panel-preview">
+            <div id="livePreviewDoc">
+              <CvPreviewDoc data={data} />
+            </div>
+            <div className="mrz">
+              {`CV<<${(data.personal.name || "YOUR NAME").toUpperCase().replace(/\s+/g, "<")}<<ATS-READY<<TARGET-${data.targetCountry.toUpperCase()}<<FORGECV.APP`}
+            </div>
+          </div>
         </div>
-      </div>
 
-      <StepTracker step={step} onSelect={setStep} />
-
-      <div className="spread">
-        <div className="panel-form">
-          {step === 0 && <PersonalStep />}
-          {step === 1 && <EducationStep />}
-          {step === 2 && <ExperienceStep />}
-          {step === 3 && <SkillsStep />}
-          {step === 4 && <PreviewStep onBack={() => setStep(0)} />}
-
-          <div className="nav-buttons">
-            <button className="btn secondary" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
-              ← Back
+        {assistantOpen && (
+          <div className="assistant-popup">
+            <button className="assistant-popup-close" onClick={() => setAssistantOpen(false)} aria-label="Close assistant">
+              ×
             </button>
-            <button
-              className="btn"
-              disabled={step === STEPS.length - 1}
-              onClick={() => setStep((s) => s + 1)}
-            >
-              {step === STEPS.length - 2 ? "Preview →" : "Next →"}
-            </button>
+            <AssistantChat />
           </div>
-        </div>
+        )}
 
-        <div className="panel-preview">
-          <div id="livePreviewDoc">
-            <CvPreviewDoc data={data} />
-          </div>
-          <div className="mrz">
-            {`CV<<${(data.personal.name || "YOUR NAME").toUpperCase().replace(/\s+/g, "<")}<<ATS-READY<<TARGET-${data.targetCountry.toUpperCase()}<<FORGECV.APP`}
-          </div>
-        </div>
+        <button
+          className="assistant-fab"
+          onClick={() => setAssistantOpen((o) => !o)}
+          aria-label="Toggle CV assistant"
+        >
+          💬
+        </button>
+
+        <div id="printArea" style={{ display: "none" }} />
       </div>
-
-      {assistantOpen && (
-        <div className="assistant-popup">
-          <button className="assistant-popup-close" onClick={() => setAssistantOpen(false)} aria-label="Close assistant">
-            ×
-          </button>
-          <AssistantChat />
-        </div>
-      )}
-
-      <button
-        className="assistant-fab"
-        onClick={() => setAssistantOpen((o) => !o)}
-        aria-label="Toggle CV assistant"
-      >
-        💬
-      </button>
-
-      <div id="printArea" style={{ display: "none" }} />
-    </div>
+    </>
   );
 }
 
