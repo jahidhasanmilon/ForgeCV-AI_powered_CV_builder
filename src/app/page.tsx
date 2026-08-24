@@ -16,6 +16,7 @@ function Builder() {
   const [step, setStep] = useState(0);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [previewExpanded, setPreviewExpanded] = useState(false);
+  const [detailsCollapsed, setDetailsCollapsed] = useState(false);
   const { data } = useCv();
 
   function exportPdf() {
@@ -64,9 +65,9 @@ function Builder() {
 
             <button className="header-icon-btn" aria-label="More options" title="More options">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="5" cy="12" r="2" />
+                <circle cx="12" cy="5" r="2" />
                 <circle cx="12" cy="12" r="2" />
-                <circle cx="19" cy="12" r="2" />
+                <circle cx="12" cy="19" r="2" />
               </svg>
             </button>
 
@@ -78,27 +79,43 @@ function Builder() {
       <div className="app">
         <StepTracker step={step} onSelect={setStep} />
 
-        <div className="spread">
-          <div className="panel-form">
-            {step === 0 && <PersonalStep />}
-            {step === 1 && <EducationStep />}
-            {step === 2 && <ExperienceStep />}
-            {step === 3 && <SkillsStep />}
-            {step === 4 && <PreviewStep onBack={() => setStep(0)} />}
-
-            <div className="nav-buttons">
-              <button className="btn secondary" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
-                ← Back
+        <div className="spread" style={{ gridTemplateColumns: detailsCollapsed ? "56px 1fr" : undefined }}>
+          {detailsCollapsed ? (
+            <div className="panel-form panel-form-collapsed" onClick={() => setDetailsCollapsed(false)}>
+              <button className="panel-toggle-btn" aria-label="Expand details" title="Expand details">
+                ⤡
               </button>
-              <button
-                className="btn"
-                disabled={step === STEPS.length - 1}
-                onClick={() => setStep((s) => s + 1)}
-              >
-                {step === STEPS.length - 2 ? "Preview →" : "Next →"}
-              </button>
+              <span className="panel-form-collapsed-label">Details</span>
             </div>
-          </div>
+          ) : (
+            <div className="panel-form">
+              <div className="panel-form-header">
+                <span className="preview-panel-label">Details</span>
+                <button className="panel-toggle-btn" onClick={() => setDetailsCollapsed(true)} title="Collapse details">
+                  ⤢ Collapse
+                </button>
+              </div>
+
+              {step === 0 && <PersonalStep />}
+              {step === 1 && <EducationStep />}
+              {step === 2 && <ExperienceStep />}
+              {step === 3 && <SkillsStep />}
+              {step === 4 && <PreviewStep onBack={() => setStep(0)} />}
+
+              <div className="nav-buttons">
+                <button className="btn secondary" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+                  ← Back
+                </button>
+                <button
+                  className="btn"
+                  disabled={step === STEPS.length - 1}
+                  onClick={() => setStep((s) => s + 1)}
+                >
+                  {step === STEPS.length - 2 ? "Preview →" : "Next →"}
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="panel-preview">
             <div className="preview-panel-header">

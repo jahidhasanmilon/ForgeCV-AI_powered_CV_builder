@@ -33,10 +33,10 @@ body {
 
 .site-header {
   width: 100%;
-  background-color: #121218;
-  background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
-  background-size: 20px 20px;
-  border-bottom: 1px solid #26262f;
+  background-color: #0e0e12;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 18px 18px;
+  border-bottom: 1px solid #242430;
   position: sticky;
   top: 0;
   z-index: 40;
@@ -114,6 +114,25 @@ body {
 }
 .panel-form { padding: 34px 32px; border-right: 1px solid var(--border); }
 .panel-preview { padding: 34px 32px; background: #fdfdfc; display: flex; flex-direction: column; }
+
+.panel-form-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.panel-toggle-btn {
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: .6px;
+  text-transform: uppercase; color: var(--muted); background: none;
+  border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; cursor: pointer;
+}
+.panel-toggle-btn:hover { border-color: var(--teal); color: var(--teal-dark); }
+
+.panel-form-collapsed {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding: 20px 8px; gap: 14px; cursor: pointer; border-right: 1px solid var(--border);
+}
+.panel-form-collapsed .panel-toggle-btn { padding: 6px 8px; }
+.panel-form-collapsed-label {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted);
+}
 
 .assistant-fab {
   position: fixed; bottom: 26px; right: 26px; z-index: 50;
