@@ -1,16 +1,17 @@
-# Departure — AI CV Builder
+# CVForge — AI CV Builder
 
-A demo full-stack app for building ATS-friendly CVs, built to showcase a modern
-AI product stack end-to-end while staying small enough to read in one sitting.
+A full-stack app for building ATS-friendly CVs, showcasing a modern AI
+product stack end-to-end while staying small enough to read in one sitting.
 
 ## Stack / features covered
 
 - **Next.js 14 (App Router) + TypeScript + React** — `src/app`, `src/components`
-- **LLM integration (Claude, Anthropic API)** — `src/lib/claude.ts`
+- **LLM integration (Anthropic API)** — `src/lib/claude.ts`
 - **AI feature**: rewrites raw job responsibilities into ATS-optimized resume
   bullets — `src/app/api/ai/rewrite-bullet/route.ts`
-- **Tool use / agent loop**: a chat assistant where Claude decides when to call
-  tools, the server executes them, and results are fed back — `src/app/api/ai/assistant/route.ts`
+- **Tool use / agent loop**: a chat assistant where the LLM decides when to
+  call tools, the server executes them, and results are fed back —
+  `src/app/api/ai/assistant/route.ts`
 - **RAG (Retrieval-Augmented Generation)**: a small local knowledge base of CV
   writing rules, retrieved with TF‑IDF + cosine similarity and injected into
   prompts — `src/lib/rag/`
