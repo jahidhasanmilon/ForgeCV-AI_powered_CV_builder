@@ -95,6 +95,12 @@ function Builder() {
           </div>
         )}
 
+        {!assistantOpen && (
+          <div className="assistant-teaser" onClick={() => setAssistantOpen(true)}>
+            👋 Need help? Ask AI
+          </div>
+        )}
+
         <button
           className="assistant-fab"
           onClick={() => setAssistantOpen((o) => !o)}

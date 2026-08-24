@@ -114,6 +114,14 @@ body {
 }
 .assistant-fab:hover { transform: scale(1.06); background: var(--teal-dark); }
 
+.assistant-teaser {
+  position: fixed; bottom: 40px; right: 92px; z-index: 50;
+  background: var(--page); border: 1px solid var(--border); color: var(--ink);
+  padding: 8px 14px; border-radius: 999px; font-size: 12.5px; white-space: nowrap;
+  box-shadow: 0 8px 20px -8px rgba(0,0,0,.55); cursor: pointer;
+}
+.assistant-teaser:hover { border-color: var(--teal); color: var(--teal-dark); }
+
 .assistant-popup {
   position: fixed; bottom: 92px; right: 26px; z-index: 50;
   width: 360px; max-width: calc(100vw - 40px);
