@@ -14,6 +14,7 @@ import AssistantChat from "@/components/AssistantChat";
 
 function Builder() {
   const [step, setStep] = useState(0);
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const { data } = useCv();
 
   return (
@@ -64,14 +65,27 @@ function Builder() {
             <CvPreviewDoc data={data} />
           </div>
           <div className="mrz">
-            {`CV<<${(data.personal.name || "YOUR NAME").toUpperCase().replace(/\s+/g, "<")}<<ATS-READY<<TARGET-${data.targetCountry.toUpperCase()}<<DEPARTURE.APP`}
+            {`CV<<${(data.personal.name || "YOUR NAME").toUpperCase().replace(/\s+/g, "<")}<<ATS-READY<<TARGET-${data.targetCountry.toUpperCase()}<<FORGECV.APP`}
           </div>
         </div>
+      </div>
 
-        <div className="panel-assistant">
+      {assistantOpen && (
+        <div className="assistant-popup">
+          <button className="assistant-popup-close" onClick={() => setAssistantOpen(false)} aria-label="Close assistant">
+            ×
+          </button>
           <AssistantChat />
         </div>
-      </div>
+      )}
+
+      <button
+        className="assistant-fab"
+        onClick={() => setAssistantOpen((o) => !o)}
+        aria-label="Toggle CV assistant"
+      >
+        💬
+      </button>
 
       <div id="printArea" style={{ display: "none" }} />
     </div>
