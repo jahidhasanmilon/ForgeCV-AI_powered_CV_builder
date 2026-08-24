@@ -23,8 +23,11 @@ function Builder() {
       <header className="site-header">
         <div className="topbar">
           <div>
-            <div className="brand">
-              ForgeCV<span>.</span>
+            <div className="brand-row">
+              <div className="brand">
+                ForgeCV<span>.</span>
+              </div>
+              <span className="brand-badge">BETA</span>
             </div>
             <div className="tagline">AI CV builder for going abroad</div>
           </div>

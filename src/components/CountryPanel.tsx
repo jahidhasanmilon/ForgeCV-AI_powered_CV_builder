@@ -29,7 +29,7 @@ export default function CountryPanel({ countryCode }: { countryCode: string }) {
   if (countryCode === "general") return null;
 
   return (
-    <div className="country-tip" style={{ background: "#fff", borderLeft: "3px solid var(--teal)" }}>
+    <div className="country-tip" style={{ borderLeft: "3px solid var(--teal)" }}>
       {loading && <span>দেশের তথ্য লোড হচ্ছে…</span>}
       {!loading && info && (
         <span>
