@@ -16,7 +16,11 @@ export default function PreviewStep({ onBack }: { onBack: () => void }) {
     if (printArea) {
       printArea.innerHTML = document.getElementById("livePreviewDoc")?.innerHTML ?? "";
     }
-    window.print();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.print();
+      });
+    });
   }
 
   async function checkMatch() {

@@ -24,7 +24,11 @@ function Builder() {
     if (printArea) {
       printArea.innerHTML = document.getElementById("livePreviewDoc")?.innerHTML ?? "";
     }
-    window.print();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.print();
+      });
+    });
   }
 
   return (
