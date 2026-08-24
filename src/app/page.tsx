@@ -21,7 +21,7 @@ function Builder() {
       <div className="topbar">
         <div>
           <div className="brand">
-            CVForge<span>.</span>
+            ForgeCV<span>.</span>
           </div>
           <div className="tagline">AI CV builder for going abroad</div>
         </div>

@@ -1,4 +1,4 @@
-# CVForge — AI CV Builder
+# ForgeCV — AI CV Builder
 
 A full-stack app for building ATS-friendly CVs, showcasing a modern AI
 product stack end-to-end while staying small enough to read in one sitting.
