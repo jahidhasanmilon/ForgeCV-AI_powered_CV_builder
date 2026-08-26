@@ -104,61 +104,26 @@ export default function DashboardPage() {
   return (
     <>
       <SiteHeader />
-      <div className="dashboard-shell">
-        <aside className="dashboard-sidebar">
-          <nav className="sidebar-nav">
-            <div className="sidebar-nav-item active">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M6 3h9l3 3v15H6z" />
-                <path d="M9 9h6M9 13h6M9 17h4" />
-              </svg>
-              Resume
-            </div>
-          </nav>
-          <div className="sidebar-search">
+      <div className="app">
+        <div className="dash-header-row">
+          <div>
+            <h1 className="dash-title">My Resumes</h1>
+            <p className="dash-sub">Build as many resumes as you need, saved to your account.</p>
+          </div>
+          <div className="dash-search">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search resumes…"
             />
           </div>
+        </div>
 
-          <div
-            className="sidebar-account"
-            onClick={user ? signOut : signInWithGoogle}
-            title={user ? "Click to sign out" : "Sign in"}
-          >
-            <div
-              className="sidebar-account-avatar"
-              style={
-                user?.photoURL
-                  ? { backgroundImage: `url(${user.photoURL})`, backgroundSize: "cover" }
-                  : undefined
-              }
-            >
-              {!user?.photoURL && (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="8" r="4" />
-                  <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" />
-                </svg>
-              )}
-            </div>
-            <span className="sidebar-account-label">
-              {authLoading ? "…" : user ? user.displayName ?? "Signed in" : "Sign in"}
-            </span>
-          </div>
-        </aside>
+        {authLoading && <div className="dash-empty">Loading…</div>}
 
-        <div className="dashboard-content">
-          <div className="app">
-            <h1 className="dash-title">My Resumes</h1>
-            <p className="dash-sub">Build as many resumes as you need, saved to your account.</p>
+        {!authLoading && resumes === null && <div className="dash-empty">Loading your resumes…</div>}
 
-            {authLoading && <div className="dash-empty">Loading…</div>}
-
-            {!authLoading && resumes === null && <div className="dash-empty">Loading your resumes…</div>}
-
-            {!authLoading && filteredResumes && (
+        {!authLoading && filteredResumes && (
               <div className="resume-grid">
                 {!search && (
                   <button className="resume-card new-card" onClick={handleNewResume} disabled={creating}>
@@ -257,8 +222,6 @@ export default function DashboardPage() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
       </div>
     </>
   );
