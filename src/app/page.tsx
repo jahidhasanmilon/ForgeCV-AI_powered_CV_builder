@@ -34,6 +34,7 @@ export default function DashboardPage() {
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -78,88 +79,115 @@ export default function DashboardPage() {
     setResumes((r) => r && r.filter((x) => x.id !== id));
   }
 
+  const filteredResumes = resumes?.filter((r) => r.name.toLowerCase().includes(search.trim().toLowerCase()));
+
   return (
     <>
       <SiteHeader />
       <div className="app">
-        <h1 className="dash-title">My Resumes</h1>
-        <p className="dash-sub">Build as many resumes as you need, saved to your account.</p>
-
-        {authLoading && <div className="dash-empty">Loading…</div>}
-
-        {!authLoading && resumes === null && <div className="dash-empty">Loading your resumes…</div>}
-
-        {!authLoading && resumes && (
-          <div className="resume-grid">
-            <button className="resume-card new-card" onClick={handleNewResume} disabled={creating}>
-              <span className="new-card-plus">+</span>
-              <span>{creating ? "Creating…" : "New resume"}</span>
-            </button>
-
-            {resumes.map((r) => (
-              <div
-                key={r.id}
-                className="resume-card"
-                onClick={() => renamingId !== r.id && router.push(`/editor/${r.id}`)}
-              >
-                <div className="resume-thumb">
-                  <div className="resume-thumb-line long" />
-                  <div className="resume-thumb-line short" />
-                  <div className="resume-thumb-gap" />
-                  <div className="resume-thumb-line" />
-                  <div className="resume-thumb-line" />
-                  <div className="resume-thumb-line short" />
-                </div>
-                <div className="resume-card-footer">
-                  {renamingId === r.id ? (
-                    <input
-                      autoFocus
-                      className="resume-rename-input"
-                      value={renameValue}
-                      onClick={(e) => e.stopPropagation()}
-                      onChange={(e) => setRenameValue(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleRename(r.id)}
-                      onBlur={() => handleRename(r.id)}
-                    />
-                  ) : (
-                    <div>
-                      <div className="resume-card-name">{r.name}</div>
-                      <div className="resume-card-meta">edited {timeAgo(r.updatedAt)}</div>
-                    </div>
-                  )}
-
-                  <div className="resume-card-menu" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      className="header-icon-btn"
-                      onClick={() => setMenuOpenId(menuOpenId === r.id ? null : r.id)}
-                      aria-label="Resume options"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="5" r="2" />
-                        <circle cx="12" cy="12" r="2" />
-                        <circle cx="12" cy="19" r="2" />
-                      </svg>
-                    </button>
-                    {menuOpenId === r.id && (
-                      <div className="resume-card-dropdown">
-                        <button
-                          onClick={() => {
-                            setRenamingId(r.id);
-                            setRenameValue(r.name);
-                            setMenuOpenId(null);
-                          }}
-                        >
-                          Rename
-                        </button>
-                        <button onClick={() => handleDelete(r.id)}>Delete</button>
-                      </div>
-                    )}
-                  </div>
-                </div>
+        <div className="dashboard-layout">
+          <aside className="dashboard-sidebar">
+            <nav className="sidebar-nav">
+              <div className="sidebar-nav-item active">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <path d="M6 3h9l3 3v15H6z" />
+                  <path d="M9 9h6M9 13h6M9 17h4" />
+                </svg>
+                My Resumes
               </div>
-            ))}
+            </nav>
+            <div className="sidebar-search">
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search resumes…"
+              />
+            </div>
+          </aside>
+
+          <div className="dashboard-main">
+            <h1 className="dash-title">My Resumes</h1>
+            <p className="dash-sub">Build as many resumes as you need, saved to your account.</p>
+
+            {authLoading && <div className="dash-empty">Loading…</div>}
+
+            {!authLoading && resumes === null && <div className="dash-empty">Loading your resumes…</div>}
+
+            {!authLoading && filteredResumes && (
+              <div className="resume-grid">
+                {!search && (
+                  <button className="resume-card new-card" onClick={handleNewResume} disabled={creating}>
+                    <span className="new-card-plus">+</span>
+                    <span>{creating ? "Creating…" : "New resume"}</span>
+                  </button>
+                )}
+
+                {filteredResumes.map((r) => (
+                  <div
+                    key={r.id}
+                    className="resume-card"
+                    onClick={() => renamingId !== r.id && router.push(`/editor/${r.id}`)}
+                  >
+                    <div className="resume-thumb">
+                      <div className="resume-thumb-line long" />
+                      <div className="resume-thumb-line short" />
+                      <div className="resume-thumb-gap" />
+                      <div className="resume-thumb-line" />
+                      <div className="resume-thumb-line" />
+                      <div className="resume-thumb-line short" />
+                    </div>
+                    <div className="resume-card-footer">
+                      {renamingId === r.id ? (
+                        <input
+                          autoFocus
+                          className="resume-rename-input"
+                          value={renameValue}
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => setRenameValue(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleRename(r.id)}
+                          onBlur={() => handleRename(r.id)}
+                        />
+                      ) : (
+                        <div>
+                          <div className="resume-card-name">{r.name}</div>
+                          <div className="resume-card-meta">edited {timeAgo(r.updatedAt)}</div>
+                        </div>
+                      )}
+
+                      <div className="resume-card-menu" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          className="header-icon-btn"
+                          onClick={() => setMenuOpenId(menuOpenId === r.id ? null : r.id)}
+                          aria-label="Resume options"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="5" r="2" />
+                            <circle cx="12" cy="12" r="2" />
+                            <circle cx="12" cy="19" r="2" />
+                          </svg>
+                        </button>
+                        {menuOpenId === r.id && (
+                          <div className="resume-card-dropdown">
+                            <button
+                              onClick={() => {
+                                setRenamingId(r.id);
+                                setRenameValue(r.name);
+                                setMenuOpenId(null);
+                              }}
+                            >
+                              Rename
+                            </button>
+                            <button onClick={() => handleDelete(r.id)}>Delete</button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </>
   );
