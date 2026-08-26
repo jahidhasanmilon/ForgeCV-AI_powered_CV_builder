@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { auth, googleProvider } from "./firebase";
+import { auth, firebaseEnabled, googleProvider } from "./firebase";
 
 interface AuthContextValue {
   user: User | null;
@@ -23,6 +23,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!firebaseEnabled) {
+      setLoading(false);
+      return;
+    }
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoading(false);
@@ -31,10 +35,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function signInWithGoogle() {
+    if (!firebaseEnabled) {
+      alert("Sign-in isn't configured yet.");
+      return;
+    }
     await signInWithPopup(auth, googleProvider);
   }
 
   async function signOut() {
+    if (!firebaseEnabled) return;
     await firebaseSignOut(auth);
   }
 
