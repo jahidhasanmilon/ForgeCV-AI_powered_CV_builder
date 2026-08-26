@@ -81,14 +81,10 @@ body {
   font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
   margin-left: 4px; cursor: pointer; text-transform: uppercase;
 }
-.signin-btn {
-  display: flex; align-items: center; gap: 7px;
-  font-family: "Inter", sans-serif; font-size: 12.5px; font-weight: 600;
-  padding: 7px 14px 7px 10px; border-radius: 999px; border: 1px solid #33333f;
-  background: #f2f2f6; color: #17171e; cursor: pointer; margin-left: 4px;
-  transition: transform .15s ease;
+.profile-icon-btn {
+  background: #24242c; color: #b6b6c1; border: 1px solid #33333f; cursor: pointer;
 }
-.signin-btn:hover { transform: translateY(-1px); }
+.profile-icon-btn:hover { background: #2d2d38; color: #fff; }
 
 .spread {
   display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 0;
@@ -384,7 +380,6 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
   .header-icons { gap: 4px; }
   .header-icon-btn { width: 30px; height: 30px; }
   .header-avatar { width: 26px; height: 26px; font-size: 10px; }
-  .signin-btn { padding: 6px 10px; font-size: 11.5px; }
 
   .panel-form, .panel-preview { padding: 22px 18px; }
   .spread { border-radius: 0; }
