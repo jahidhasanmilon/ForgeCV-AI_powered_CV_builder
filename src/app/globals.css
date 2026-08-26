@@ -245,15 +245,16 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
 .chat-suggestion:hover { border-color: var(--teal); color: var(--teal-dark); }
 
 /* Dashboard */
-.dashboard-layout { display: flex; gap: 32px; align-items: flex-start; }
+.dashboard-shell { display: flex; align-items: stretch; min-height: calc(100vh - 68px); }
 .dashboard-sidebar {
-  width: 210px; flex-shrink: 0; display: flex; flex-direction: column; gap: 18px;
-  position: sticky; top: 90px;
+  width: 240px; flex-shrink: 0; display: flex; flex-direction: column; gap: 22px;
+  background: var(--paper); border-right: 1px solid var(--border);
+  padding: 28px 18px;
 }
 .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
 .sidebar-nav-item {
-  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
-  border-radius: var(--radius); font-size: 13.5px; font-weight: 600; color: var(--muted);
+  display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+  border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--muted);
 }
 .sidebar-nav-item.active {
   background: var(--page); color: var(--ink);
@@ -264,17 +265,12 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
   font-size: 12.5px; background: var(--page); color: var(--ink);
 }
 .sidebar-search input:focus { outline: none; border-color: var(--teal); }
-.dashboard-main { flex: 1; min-width: 0; }
+.dashboard-content { flex: 1; min-width: 0; }
+.dashboard-content .app { margin: 0; max-width: none; }
 
 .dash-title { font-family: "Fraunces", serif; font-size: 30px; font-weight: 600; margin: 8px 0 4px; }
 .dash-sub { font-size: 13.5px; color: var(--muted); margin: 0 0 28px; }
 .dash-empty { padding: 60px 0; text-align: center; color: var(--muted); font-size: 14px; }
-
-.signin-prompt {
-  max-width: 420px; margin: 40px auto; text-align: center;
-  border: 1px solid var(--border); border-radius: 10px; padding: 32px 28px; background: var(--page);
-}
-.signin-prompt-title { font-family: "Fraunces", serif; font-size: 19px; font-weight: 600; }
 
 .resume-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;
@@ -411,10 +407,14 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
   .preview-modal { padding: 28px 20px; max-width: 94vw; }
   .preview-modal-backdrop { padding: 24px 12px; }
 
-  .dashboard-layout { flex-direction: column; gap: 16px; }
-  .dashboard-sidebar { width: 100%; position: static; flex-direction: row; align-items: center; gap: 12px; }
+  .dashboard-shell { flex-direction: column; min-height: 0; }
+  .dashboard-sidebar {
+    width: 100%; flex-direction: row; align-items: center; gap: 12px;
+    padding: 14px 16px; border-right: none; border-bottom: 1px solid var(--border);
+  }
   .sidebar-nav { flex-direction: row; }
   .sidebar-search { flex: 1; }
+  .dashboard-content .app { padding: 18px 14px 48px; }
   .dash-title { font-size: 24px; }
   .resume-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
   .resume-thumb { height: 130px; padding: 16px; }

@@ -84,28 +84,28 @@ export default function DashboardPage() {
   return (
     <>
       <SiteHeader />
-      <div className="app">
-        <div className="dashboard-layout">
-          <aside className="dashboard-sidebar">
-            <nav className="sidebar-nav">
-              <div className="sidebar-nav-item active">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M6 3h9l3 3v15H6z" />
-                  <path d="M9 9h6M9 13h6M9 17h4" />
-                </svg>
-                My Resumes
-              </div>
-            </nav>
-            <div className="sidebar-search">
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search resumes…"
-              />
+      <div className="dashboard-shell">
+        <aside className="dashboard-sidebar">
+          <nav className="sidebar-nav">
+            <div className="sidebar-nav-item active">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path d="M6 3h9l3 3v15H6z" />
+                <path d="M9 9h6M9 13h6M9 17h4" />
+              </svg>
+              Resume
             </div>
-          </aside>
+          </nav>
+          <div className="sidebar-search">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search resumes…"
+            />
+          </div>
+        </aside>
 
-          <div className="dashboard-main">
+        <div className="dashboard-content">
+          <div className="app">
             <h1 className="dash-title">My Resumes</h1>
             <p className="dash-sub">Build as many resumes as you need, saved to your account.</p>
 
