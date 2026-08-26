@@ -440,9 +440,8 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
 
 .site-footer {
   max-width: 1220px; margin: 40px auto 0; padding: 20px 20px 32px;
-  text-align: center; color: var(--muted); font-size: 11.5px; line-height: 1.7;
+  text-align: center; color: var(--muted); font-size: 11.5px;
 }
-.site-footer p { margin: 2px 0; }
 
 @media print {
   body * { visibility: hidden; }
