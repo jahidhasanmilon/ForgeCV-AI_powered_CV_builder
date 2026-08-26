@@ -19,6 +19,7 @@ import {
   renameLocalResume,
 } from "@/lib/localResumes";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 function timeAgo(ms: number) {
   const diff = Date.now() - ms;
@@ -223,6 +224,7 @@ export default function DashboardPage() {
               </div>
             )}
       </div>
+      <SiteFooter />
     </>
   );
 }

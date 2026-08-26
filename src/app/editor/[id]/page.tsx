@@ -13,6 +13,7 @@ import {
 } from "@/lib/localResumes";
 import { CvData, EMPTY_CV } from "@/lib/types";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import EditorToolbar from "@/components/EditorToolbar";
 import Accordion from "@/components/Accordion";
 import PersonalStep from "@/components/steps/PersonalStep";
@@ -280,6 +281,7 @@ export default function EditorPage({ params }: { params: { id: string } }) {
           autoDownload={autoDownload}
         />
       </CvProvider>
+      <SiteFooter />
     </>
   );
 }
