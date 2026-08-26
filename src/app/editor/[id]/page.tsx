@@ -1,7 +1,7 @@
 "use client";
 
 import { CSSProperties, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
 import { CvProvider, useCv } from "@/lib/cvContext";
 import { deleteResume, getResume, renameResume, saveResume } from "@/lib/resumes";
@@ -35,13 +35,27 @@ const ACCENTS = [
   { label: "Violet", value: "#6d28d9" },
 ];
 
-function EditorBody({ id, name, onRename, onDelete }: { id: string; name: string; onRename: (n: string) => void; onDelete: () => void }) {
+function EditorBody({
+  id,
+  name,
+  onRename,
+  onDelete,
+  autoDownload,
+}: {
+  id: string;
+  name: string;
+  onRename: (n: string) => void;
+  onDelete: () => void;
+  autoDownload: boolean;
+}) {
   const { data } = useCv();
   const { user } = useAuth();
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("content");
   const [previewExpanded, setPreviewExpanded] = useState(false);
   const [detailsCollapsed, setDetailsCollapsed] = useState(false);
   const [accent, setAccent] = useState(ACCENTS[0].value);
+  const autoDownloadDone = useRef(false);
 
   function exportPdf() {
     const printArea = document.getElementById("printArea");
@@ -64,6 +78,13 @@ function EditorBody({ id, name, onRename, onDelete }: { id: string; name: string
     }, 900);
     return () => clearTimeout(t);
   }, [data, user, id]);
+
+  useEffect(() => {
+    if (!autoDownload || autoDownloadDone.current) return;
+    autoDownloadDone.current = true;
+    exportPdf();
+    router.replace(`/editor/${id}`);
+  }, [autoDownload, id, router]);
 
   return (
     <div className="app">
@@ -183,6 +204,8 @@ export default function EditorPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const autoDownload = searchParams.get("download") === "1";
 
   const [cv, setCv] = useState<CvData | null>(null);
   const [name, setName] = useState("Untitled resume");
@@ -249,7 +272,13 @@ export default function EditorPage({ params }: { params: { id: string } }) {
     <>
       <SiteHeader />
       <CvProvider initial={cv ?? EMPTY_CV}>
-        <EditorBody id={id} name={name} onRename={handleRename} onDelete={handleDelete} />
+        <EditorBody
+          id={id}
+          name={name}
+          onRename={handleRename}
+          onDelete={handleDelete}
+          autoDownload={autoDownload}
+        />
       </CvProvider>
     </>
   );

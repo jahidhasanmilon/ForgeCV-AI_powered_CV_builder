@@ -54,3 +54,13 @@ export async function renameLocalResume(id: string, name: string): Promise<void>
 export async function deleteLocalResume(id: string): Promise<void> {
   writeAll(readAll().filter((r) => r.id !== id));
 }
+
+export async function duplicateLocalResume(id: string): Promise<string> {
+  const all = readAll();
+  const original = all.find((r) => r.id === id);
+  if (!original) throw new Error("Resume not found");
+  const newId = `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  all.push({ id: newId, name: `${original.name} (copy)`, cv: original.cv, updatedAt: Date.now() });
+  writeAll(all);
+  return newId;
+}

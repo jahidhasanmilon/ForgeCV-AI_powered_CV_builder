@@ -64,3 +64,12 @@ export async function renameResume(uid: string, id: string, name: string): Promi
 export async function deleteResume(uid: string, id: string): Promise<void> {
   await deleteDoc(doc(resumesCol(uid), id));
 }
+
+export async function duplicateResume(uid: string, id: string): Promise<string> {
+  const original = await getResume(uid, id);
+  if (!original) throw new Error("Resume not found");
+  const ref = doc(resumesCol(uid));
+  const now = Date.now();
+  await setDoc(ref, { name: `${original.name} (copy)`, cv: original.cv, updatedAt: now, createdAt: now });
+  return ref.id;
+}

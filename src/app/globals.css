@@ -308,15 +308,17 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
   background: var(--paper); color: var(--ink);
 }
 .resume-card-dropdown {
-  position: absolute; right: 0; top: 38px; z-index: 20; min-width: 130px;
-  background: var(--page); border: 1px solid var(--border); border-radius: 8px;
-  box-shadow: 0 14px 30px -14px rgba(20,33,61,.35); overflow: hidden;
+  position: absolute; right: 0; top: 38px; z-index: 20; min-width: 170px;
+  background: var(--page); border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 14px 30px -14px rgba(20,33,61,.35); overflow: hidden; padding: 4px;
 }
 .resume-card-dropdown button {
-  display: block; width: 100%; text-align: left; padding: 9px 14px; font-size: 12.5px;
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  padding: 9px 10px; font-size: 13px; border-radius: 6px;
   border: none; background: none; cursor: pointer; color: var(--ink);
 }
 .resume-card-dropdown button:hover { background: var(--paper); }
+.resume-card-dropdown button.danger { color: var(--stamp-red); }
 
 .new-card {
   align-items: center; justify-content: center; gap: 8px; min-height: 258px;

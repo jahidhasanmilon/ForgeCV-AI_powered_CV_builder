@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
-import { createResume, deleteResume, listResumes, renameResume, ResumeMeta } from "@/lib/resumes";
+import {
+  createResume,
+  deleteResume,
+  duplicateResume,
+  listResumes,
+  renameResume,
+  ResumeMeta,
+} from "@/lib/resumes";
 import {
   createLocalResume,
   deleteLocalResume,
+  duplicateLocalResume,
   listLocalResumes,
   renameLocalResume,
 } from "@/lib/localResumes";
@@ -77,6 +85,18 @@ export default function DashboardPage() {
     if (user) await deleteResume(user.uid, id);
     else await deleteLocalResume(id);
     setResumes((r) => r && r.filter((x) => x.id !== id));
+  }
+
+  async function handleDuplicate(id: string) {
+    setMenuOpenId(null);
+    if (user) await duplicateResume(user.uid, id);
+    else await duplicateLocalResume(id);
+    setResumes(user ? await listResumes(user.uid) : await listLocalResumes());
+  }
+
+  function handleDownload(id: string) {
+    setMenuOpenId(null);
+    router.push(`/editor/${id}?download=1`);
   }
 
   const filteredResumes = resumes?.filter((r) => r.name.toLowerCase().includes(search.trim().toLowerCase()));
@@ -175,9 +195,35 @@ export default function DashboardPage() {
                                 setMenuOpenId(null);
                               }}
                             >
-                              Rename
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 20h9" />
+                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                              </svg>
+                              Edit title
                             </button>
-                            <button onClick={() => handleDelete(r.id)}>Delete</button>
+                            <button onClick={() => handleDuplicate(r.id)}>
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="9" y="9" width="12" height="12" rx="2" />
+                                <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                              </svg>
+                              Duplicate
+                            </button>
+                            <button onClick={() => handleDownload(r.id)}>
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 3v12" />
+                                <path d="M7 10l5 5 5-5" />
+                                <path d="M4 19h16" />
+                              </svg>
+                              Download
+                            </button>
+                            <button className="danger" onClick={() => handleDelete(r.id)}>
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M3 6h18" />
+                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                              </svg>
+                              Delete
+                            </button>
                           </div>
                         )}
                       </div>
