@@ -6,6 +6,7 @@ import { CvData, EMPTY_CV } from "./types";
 type Action =
   | { type: "SET_PERSONAL"; field: keyof CvData["personal"]; value: string }
   | { type: "SET_COUNTRY"; value: CvData["targetCountry"] }
+  | { type: "SET_SUMMARY"; value: string }
   | { type: "SET_EDU"; index: number; field: string; value: string }
   | { type: "ADD_EDU" }
   | { type: "REMOVE_EDU"; index: number }
@@ -15,6 +16,12 @@ type Action =
   | { type: "REMOVE_BULLET"; expIndex: number; bulletIndex: number }
   | { type: "ADD_EXP" }
   | { type: "REMOVE_EXP"; index: number }
+  | { type: "SET_PROJECT"; index: number; field: string; value: string }
+  | { type: "SET_PROJECT_BULLET"; projIndex: number; bulletIndex: number; value: string }
+  | { type: "ADD_PROJECT_BULLET"; projIndex: number }
+  | { type: "REMOVE_PROJECT_BULLET"; projIndex: number; bulletIndex: number }
+  | { type: "ADD_PROJECT" }
+  | { type: "REMOVE_PROJECT"; index: number }
   | { type: "ADD_SKILL"; value: string }
   | { type: "REMOVE_SKILL"; index: number }
   | { type: "LOAD"; data: CvData };
@@ -25,6 +32,8 @@ function reducer(state: CvData, action: Action): CvData {
       return { ...state, personal: { ...state.personal, [action.field]: action.value } };
     case "SET_COUNTRY":
       return { ...state, targetCountry: action.value };
+    case "SET_SUMMARY":
+      return { ...state, summary: action.value };
     case "SET_EDU": {
       const education = [...state.education];
       education[action.index] = { ...education[action.index], [action.field]: action.value };
@@ -78,6 +87,41 @@ function reducer(state: CvData, action: Action): CvData {
       };
     case "REMOVE_EXP":
       return { ...state, experience: state.experience.filter((_, i) => i !== action.index) };
+    case "SET_PROJECT": {
+      const projects = [...state.projects];
+      projects[action.index] = { ...projects[action.index], [action.field]: action.value };
+      return { ...state, projects };
+    }
+    case "SET_PROJECT_BULLET": {
+      const projects = [...state.projects];
+      const bullets = [...projects[action.projIndex].bullets];
+      bullets[action.bulletIndex] = action.value;
+      projects[action.projIndex] = { ...projects[action.projIndex], bullets };
+      return { ...state, projects };
+    }
+    case "ADD_PROJECT_BULLET": {
+      const projects = [...state.projects];
+      projects[action.projIndex] = {
+        ...projects[action.projIndex],
+        bullets: [...projects[action.projIndex].bullets, ""],
+      };
+      return { ...state, projects };
+    }
+    case "REMOVE_PROJECT_BULLET": {
+      const projects = [...state.projects];
+      projects[action.projIndex] = {
+        ...projects[action.projIndex],
+        bullets: projects[action.projIndex].bullets.filter((_, i) => i !== action.bulletIndex),
+      };
+      return { ...state, projects };
+    }
+    case "ADD_PROJECT":
+      return {
+        ...state,
+        projects: [...state.projects, { title: "", link: "", tech: "", bullets: [""] }],
+      };
+    case "REMOVE_PROJECT":
+      return { ...state, projects: state.projects.filter((_, i) => i !== action.index) };
     case "ADD_SKILL":
       return { ...state, skills: [...state.skills, action.value] };
     case "REMOVE_SKILL":

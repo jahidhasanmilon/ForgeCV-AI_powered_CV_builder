@@ -17,9 +17,10 @@ product stack end-to-end while staying small enough to read in one sitting.
   prompts — `src/lib/rag/`
 - **3rd-party API integration**: live country facts from restcountries.com —
   `src/lib/countryApi.ts`, used both as a UI panel and as an agent tool
-- **Google sign-in + saved CVs**: Firebase Authentication (Google provider) and
-  Firestore persist each signed-in user's CV — `src/lib/firebase.ts`,
-  `src/lib/authContext.tsx`, `src/lib/useCvSync.ts`
+- **Google sign-in + multi-resume dashboard**: Firebase Authentication (Google
+  provider) and Firestore let a signed-in user create, save, rename, and
+  delete multiple resumes — `src/lib/firebase.ts`, `src/lib/authContext.tsx`,
+  `src/lib/resumes.ts`
 
 ## Getting started
 
@@ -37,21 +38,21 @@ product stack end-to-end while staying small enough to read in one sitting.
    ```bash
    npm run dev
    ```
-4. Open http://localhost:3000 — the app loads pre-filled with a sample CV so
-   you can see every feature immediately.
+4. Open http://localhost:3000 — sign in with Google to create and save
+   resumes. Signed-out visitors just see the sign-in prompt.
 
-## Firebase setup (Google sign-in + saved CVs)
+## Firebase setup (Google sign-in + saved resumes)
 
 1. Create a project at https://console.firebase.google.com/.
 2. **Authentication** → Sign-in method → enable **Google**.
 3. **Build → Firestore Database** → create a database (start in production mode).
-4. Set these Firestore security rules so users can only read/write their own
-   CV document (Firestore → Rules):
+4. Set these Firestore security rules so a user can only read/write their own
+   resumes, stored at `users/{uid}/resumes/{resumeId}` (Firestore → Rules):
    ```
    rules_version = '2';
    service cloud.firestore {
      match /databases/{database}/documents {
-       match /users/{userId} {
+       match /users/{userId}/resumes/{resumeId} {
          allow read, write: if request.auth != null && request.auth.uid == userId;
        }
      }
@@ -69,7 +70,8 @@ product stack end-to-end while staying small enough to read in one sitting.
 ```
 src/
   app/
-    page.tsx                 # main builder UI (steps + live preview + assistant)
+    page.tsx                 # dashboard: "My Resumes" grid, create/rename/delete
+    editor/[id]/page.tsx      # editor for one resume: accordion sections + live preview
     layout.tsx, globals.css
     api/
       ai/rewrite-bullet/     # LLM: bullet rewriting
@@ -77,23 +79,25 @@ src/
       ai/assistant/          # LLM + tool-calling agent loop
       country/                # 3rd-party API proxy (restcountries.com)
   components/
-    steps/                  # Personal, Education, Experience, Skills, Preview
+    SiteHeader.tsx, EditorToolbar.tsx, Accordion.tsx
+    steps/                  # Personal, Summary, Education, Experience, Projects, Skills, job-match (Preview)
     CvPreviewDoc.tsx         # renders the live CV document
     CountryPanel.tsx         # live 3rd-party API panel
-    AssistantChat.tsx        # tool-calling chat widget
+    AssistantChat.tsx        # tool-calling chat widget (embedded in the editor's AI Tools tab)
   lib/
-    types.ts, cvContext.tsx, demoData.ts, claude.ts, countryApi.ts
-    firebase.ts, authContext.tsx, useCvSync.ts   # Google sign-in + Firestore sync
+    types.ts, cvContext.tsx, claude.ts, countryApi.ts
+    firebase.ts, authContext.tsx           # Google sign-in
+    resumes.ts                              # Firestore CRUD for per-user resumes
     rag/knowledge.ts          # local knowledge base
     rag/retrieve.ts           # TF-IDF + cosine similarity retrieval
 ```
 
 ## Notes
 
-- CV state lives in React state (`src/lib/cvContext.tsx`) for the current
-  session; if signed in with Google, it's also persisted to Firestore
-  (`src/lib/useCvSync.ts`) so it's there next time you log in. Signed-out
-  visitors just get the in-session demo state.
+- Each signed-in user can create multiple resumes from the dashboard
+  (`src/app/page.tsx`); each one lives at `users/{uid}/resumes/{resumeId}` in
+  Firestore and autosaves ~1s after you stop typing (`src/app/editor/[id]/page.tsx`).
+  Signing out (or never signing in) means nothing is saved.
 - PDF export uses the browser's native print-to-PDF via a hidden `#printArea`
   and `@media print` styles in `globals.css`.
 - The RAG knowledge base is intentionally tiny and in-memory so the whole
