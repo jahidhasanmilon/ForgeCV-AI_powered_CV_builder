@@ -5,6 +5,12 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
 import { CvProvider, useCv } from "@/lib/cvContext";
 import { deleteResume, getResume, renameResume, saveResume } from "@/lib/resumes";
+import {
+  deleteLocalResume,
+  getLocalResume,
+  renameLocalResume,
+  saveLocalResume,
+} from "@/lib/localResumes";
 import { CvData, EMPTY_CV } from "@/lib/types";
 import SiteHeader from "@/components/SiteHeader";
 import EditorToolbar from "@/components/EditorToolbar";
@@ -52,9 +58,9 @@ function EditorBody({ id, name, onRename, onDelete }: { id: string; name: string
   const accentStyle = { "--doc-teal-dark": accent } as CSSProperties;
 
   useEffect(() => {
-    if (!user) return;
     const t = setTimeout(() => {
-      saveResume(user.uid, id, data).catch((e) => console.error("Failed to save resume:", e));
+      const save = user ? saveResume(user.uid, id, data) : saveLocalResume(id, data);
+      save.catch((e) => console.error("Failed to save resume:", e));
     }, 900);
     return () => clearTimeout(t);
   }, [data, user, id]);
@@ -185,15 +191,12 @@ export default function EditorPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user) {
-      router.replace("/");
-      return;
-    }
     if (loadedFor.current === id) return;
     loadedFor.current = id;
 
     let cancelled = false;
-    getResume(user.uid, id).then((resume) => {
+    const load = user ? getResume(user.uid, id) : getLocalResume(id);
+    load.then((resume) => {
       if (cancelled) return;
       if (!resume) {
         setNotFound(true);
@@ -205,17 +208,18 @@ export default function EditorPage({ params }: { params: { id: string } }) {
     return () => {
       cancelled = true;
     };
-  }, [authLoading, user, id, router]);
+  }, [authLoading, user, id]);
 
   async function handleRename(newName: string) {
     setName(newName);
     if (user) await renameResume(user.uid, id, newName);
+    else await renameLocalResume(id, newName);
   }
 
   async function handleDelete() {
-    if (!user) return;
     if (!window.confirm("Delete this resume? This can't be undone.")) return;
-    await deleteResume(user.uid, id);
+    if (user) await deleteResume(user.uid, id);
+    else await deleteLocalResume(id);
     router.push("/");
   }
 

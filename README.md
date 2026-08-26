@@ -88,6 +88,7 @@ src/
     types.ts, cvContext.tsx, claude.ts, countryApi.ts
     firebase.ts, authContext.tsx           # Google sign-in
     resumes.ts                              # Firestore CRUD for per-user resumes
+    localResumes.ts                         # localStorage fallback used when signed out
     rag/knowledge.ts          # local knowledge base
     rag/retrieve.ts           # TF-IDF + cosine similarity retrieval
 ```
@@ -97,7 +98,10 @@ src/
 - Each signed-in user can create multiple resumes from the dashboard
   (`src/app/page.tsx`); each one lives at `users/{uid}/resumes/{resumeId}` in
   Firestore and autosaves ~1s after you stop typing (`src/app/editor/[id]/page.tsx`).
-  Signing out (or never signing in) means nothing is saved.
+  Without signing in (or before Firebase is configured), the same dashboard and
+  editor work against `localStorage` instead (`src/lib/localResumes.ts`), so the
+  full app is usable with zero setup — those resumes just stay on that one
+  browser instead of following you across devices.
 - PDF export uses the browser's native print-to-PDF via a hidden `#printArea`
   and `@media print` styles in `globals.css`.
 - The RAG knowledge base is intentionally tiny and in-memory so the whole

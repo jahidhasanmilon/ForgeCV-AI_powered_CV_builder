@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
 import { createResume, deleteResume, listResumes, renameResume, ResumeMeta } from "@/lib/resumes";
+import {
+  createLocalResume,
+  deleteLocalResume,
+  listLocalResumes,
+  renameLocalResume,
+} from "@/lib/localResumes";
 import SiteHeader from "@/components/SiteHeader";
 
 function timeAgo(ms: number) {
@@ -30,12 +36,9 @@ export default function DashboardPage() {
   const [renameValue, setRenameValue] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      setResumes(null);
-      return;
-    }
     let cancelled = false;
-    listResumes(user.uid).then((r) => {
+    const load = user ? listResumes(user.uid) : listLocalResumes();
+    load.then((r) => {
       if (!cancelled) setResumes(r);
     });
     return () => {
@@ -44,10 +47,12 @@ export default function DashboardPage() {
   }, [user]);
 
   async function handleNewResume() {
-    if (!user || creating) return;
+    if (creating) return;
     setCreating(true);
     try {
-      const id = await createResume(user.uid, "Untitled resume");
+      const id = user
+        ? await createResume(user.uid, "Untitled resume")
+        : await createLocalResume("Untitled resume");
       router.push(`/editor/${id}`);
     } finally {
       setCreating(false);
@@ -55,20 +60,21 @@ export default function DashboardPage() {
   }
 
   async function handleRename(id: string) {
-    if (!user || !renameValue.trim()) {
+    if (!renameValue.trim()) {
       setRenamingId(null);
       return;
     }
-    await renameResume(user.uid, id, renameValue.trim());
+    if (user) await renameResume(user.uid, id, renameValue.trim());
+    else await renameLocalResume(id, renameValue.trim());
     setResumes((r) => r && r.map((x) => (x.id === id ? { ...x, name: renameValue.trim() } : x)));
     setRenamingId(null);
   }
 
   async function handleDelete(id: string) {
-    if (!user) return;
     setMenuOpenId(null);
     if (!window.confirm("Delete this resume? This can't be undone.")) return;
-    await deleteResume(user.uid, id);
+    if (user) await deleteResume(user.uid, id);
+    else await deleteLocalResume(id);
     setResumes((r) => r && r.filter((x) => x.id !== id));
   }
 
@@ -81,9 +87,9 @@ export default function DashboardPage() {
 
         {authLoading && <div className="dash-empty">Loading…</div>}
 
-        {user && resumes === null && <div className="dash-empty">Loading your resumes…</div>}
+        {!authLoading && resumes === null && <div className="dash-empty">Loading your resumes…</div>}
 
-        {user && resumes && (
+        {!authLoading && resumes && (
           <div className="resume-grid">
             <button className="resume-card new-card" onClick={handleNewResume} disabled={creating}>
               <span className="new-card-plus">+</span>
