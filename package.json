@@ -12,7 +12,8 @@
     "next": "14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "@anthropic-ai/sdk": "0.27.3"
+    "@anthropic-ai/sdk": "0.27.3",
+    "firebase": "10.14.1"
   },
   "devDependencies": {
     "typescript": "5.5.4",
