@@ -34,7 +34,7 @@ function timeAgo(ms: number) {
 }
 
 export default function DashboardPage() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signInWithGoogle, signOut } = useAuth();
   const router = useRouter();
 
   const [resumes, setResumes] = useState<ResumeMeta[] | null>(null);
@@ -121,6 +121,31 @@ export default function DashboardPage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search resumes…"
             />
+          </div>
+
+          <div
+            className="sidebar-account"
+            onClick={user ? signOut : signInWithGoogle}
+            title={user ? "Click to sign out" : "Sign in"}
+          >
+            <div
+              className="sidebar-account-avatar"
+              style={
+                user?.photoURL
+                  ? { backgroundImage: `url(${user.photoURL})`, backgroundSize: "cover" }
+                  : undefined
+              }
+            >
+              {!user?.photoURL && (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+                </svg>
+              )}
+            </div>
+            <span className="sidebar-account-label">
+              {authLoading ? "…" : user ? user.displayName ?? "Signed in" : "Sign in"}
+            </span>
           </div>
         </aside>
 

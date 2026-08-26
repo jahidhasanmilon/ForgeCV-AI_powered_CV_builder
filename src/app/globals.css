@@ -265,6 +265,19 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
   font-size: 12.5px; background: var(--page); color: var(--ink);
 }
 .sidebar-search input:focus { outline: none; border-color: var(--teal); }
+
+.sidebar-account {
+  margin-top: auto; display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 10px; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--ink);
+}
+.sidebar-account:hover { background: var(--page); }
+.sidebar-account-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--border);
+  display: flex; align-items: center; justify-content: center; color: var(--muted); flex-shrink: 0;
+}
+.sidebar-account-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 .dashboard-content { flex: 1; min-width: 0; }
 .dashboard-content .app { margin: 0; max-width: none; }
 
@@ -416,6 +429,8 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
   }
   .sidebar-nav { flex-direction: row; }
   .sidebar-search { flex: 1; }
+  .sidebar-account { margin-top: 0; margin-left: auto; }
+  .sidebar-account-label { display: none; }
   .dashboard-content .app { padding: 18px 14px 48px; }
   .dash-title { font-size: 24px; }
   .resume-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
