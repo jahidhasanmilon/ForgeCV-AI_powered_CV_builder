@@ -42,7 +42,7 @@ function Builder() {
               </div>
               <span className="brand-badge">BETA</span>
             </div>
-            <div className="tagline">AI CV builder for going abroad</div>
+            <div className="tagline">Build your CV, powered by AI</div>
           </div>
 
           <div className="header-icons">
