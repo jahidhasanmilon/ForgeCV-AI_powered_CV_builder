@@ -30,7 +30,7 @@ export default function CountryPanel({ countryCode }: { countryCode: string }) {
 
   return (
     <div className="country-tip" style={{ borderLeft: "3px solid var(--teal)" }}>
-      {loading && <span>দেশের তথ্য লোড হচ্ছে…</span>}
+      {loading && <span>Loading country info…</span>}
       {!loading && info && (
         <span>
           <strong>
@@ -44,7 +44,7 @@ export default function CountryPanel({ countryCode }: { countryCode: string }) {
           </span>
         </span>
       )}
-      {!loading && !info && <span>দেশের তথ্য এই মুহূর্তে পাওয়া যায়নি।</span>}
+      {!loading && !info && <span>Country info isn&apos;t available right now.</span>}
     </div>
   );
 }

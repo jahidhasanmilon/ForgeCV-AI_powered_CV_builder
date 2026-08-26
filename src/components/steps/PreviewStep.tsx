@@ -47,7 +47,7 @@ export default function PreviewStep({ onBack }: { onBack: () => void }) {
   return (
     <div>
       <h2 className="step-title">Preview & job match</h2>
-      <p className="step-sub">Final CV দেখুন, PDF export করুন, অথবা একটা job description-এর সাথে ম্যাচ চেক করুন।</p>
+      <p className="step-sub">View your final CV, export it as a PDF, or check the match against a job description.</p>
 
       <div className="export-bar">
         <button className="btn" onClick={exportPdf}>

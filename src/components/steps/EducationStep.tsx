@@ -8,7 +8,7 @@ export default function EducationStep() {
   return (
     <div>
       <h2 className="step-title">Education</h2>
-      <p className="step-sub">সবচেয়ে সাম্প্রতিক ডিগ্রি আগে দিন।</p>
+      <p className="step-sub">List your most recent degree first.</p>
 
       {data.education.map((ed, i) => (
         <div className="block-card" key={i}>

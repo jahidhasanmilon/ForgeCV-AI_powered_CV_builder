@@ -32,7 +32,7 @@ export default function ExperienceStep() {
   return (
     <div>
       <h2 className="step-title">Experience</h2>
-      <p className="step-sub">Raw ভাষায় লিখুন কী করেছেন — AI (Claude) সেটা ATS bullet-এ রূপান্তর করে দেবে।</p>
+      <p className="step-sub">Write what you did in plain language — AI will turn it into an ATS-friendly bullet.</p>
 
       {data.experience.map((ex, i) => (
         <div className="block-card" key={i}>

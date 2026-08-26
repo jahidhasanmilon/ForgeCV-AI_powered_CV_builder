@@ -17,7 +17,7 @@ export default function PersonalStep() {
   return (
     <div>
       <h2 className="step-title">Personal details</h2>
-      <p className="step-sub">নাম আর যোগাযোগের তথ্য — প্রতিটা CV-র ভিত্তি।</p>
+      <p className="step-sub">Name and contact details — the foundation of every CV.</p>
 
       <div className="field">
         <label>Full name</label>

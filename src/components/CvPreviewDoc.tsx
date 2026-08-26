@@ -74,7 +74,7 @@ export default function CvPreviewDoc({ data }: { data: CvData }) {
         </>
       )}
 
-      {isEmpty && <div className="doc-empty">তথ্য যোগ করলে এখানে live preview দেখতে পাবেন।</div>}
+      {isEmpty && <div className="doc-empty">Add your details to see a live preview here.</div>}
     </div>
   );
 }

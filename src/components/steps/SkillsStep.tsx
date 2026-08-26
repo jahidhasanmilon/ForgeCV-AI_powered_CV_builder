@@ -18,7 +18,7 @@ export default function SkillsStep() {
   return (
     <div>
       <h2 className="step-title">Skills</h2>
-      <p className="step-sub">Technical ও soft skills — Enter চাপুন যোগ করতে।</p>
+      <p className="step-sub">Technical and soft skills — press Enter to add.</p>
       <div className="skill-chip-input">
         <input
           value={value}
