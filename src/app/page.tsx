@@ -156,9 +156,6 @@ function Builder() {
             <div id="livePreviewDoc">
               <CvPreviewDoc data={data} />
             </div>
-            <div className="mrz">
-              {`CV<<${(data.personal.name || "YOUR NAME").toUpperCase().replace(/\s+/g, "<")}<<ATS-READY<<TARGET-${data.targetCountry.toUpperCase()}<<FORGECV.APP`}
-            </div>
           </div>
         </div>
 

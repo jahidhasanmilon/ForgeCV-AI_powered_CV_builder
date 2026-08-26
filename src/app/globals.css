@@ -283,10 +283,6 @@ h2.step-title { font-family: "Fraunces", serif; font-size: 24px; font-weight: 60
 .doc ul { margin: 5px 0 0 18px; padding: 0; }
 .doc li { margin-bottom: 4px; }
 .doc-empty { color: var(--doc-muted); font-size: 15px; font-style: italic; }
-.mrz {
-  margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--doc-border);
-  font-family: "IBM Plex Mono", monospace; font-size: 9px; letter-spacing: 1.4px; color: #b8bec8; word-break: break-all;
-}
 .export-bar { display: flex; gap: 10px; margin-top: 16px; margin-bottom: 4px; }
 
 .match-box { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 16px; background: #fff; }
